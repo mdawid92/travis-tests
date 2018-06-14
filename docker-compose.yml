@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  dummy:
+    build: .
+    image: dummy
+    container_name: dummy
+  db:
+    image: postgres
+    container_name: db
+    volumes:
+      - pg:/var/lib/postgresql/data/
+
+volumes:
+  pg:
