@@ -12,12 +12,13 @@ before_deploy:
   - openssl aes-256-cbc -K $encrypted_33fe656a832f_key -iv $encrypted_33fe656a832f_iv -in travis-key.enc -out /tmp/travis-key -d
   - eval "$(ssh-agent -s)"
   - chmod 600 /tmp/travis-key
+  - ssh-add /tmp/travis-key
   - scp -i /tmp/travis-key ./deploy.sh root@test.mul.space:~/travis-tests/deploy.sh
   - ssh -i /tmp/travis-key root@test.mul.space "chmod a+x ~/travis-tests/deploy.sh"
 
 deploy:
   provider: script
   skip_cleanup: true
-  script: ssh -i /tmp/travis-key root@test.mul.space "~/travis-tests/deploy.sh"
+  script: ssh root@test.mul.space "~/travis-tests/deploy.sh"
   on:
     branch: master
