@@ -15,6 +15,7 @@ before_deploy:
   - ssh-add travis-key
   - scp -i travis-key ./deploy.sh root@test.mul.space:~/travis-tests/deploy.sh
   - ssh -i travis-key root@test.mul.space "chmod a+x ~/travis-tests/deploy.sh"
+  - ssh -i travis-key root@test.mul.space pwd
   - ssh -i travis-key root@test.mul.space travis-tests/deploy.sh
 
 deploy:
