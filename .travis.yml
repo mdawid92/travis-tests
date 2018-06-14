@@ -13,7 +13,7 @@ before_deploy:
   - eval "$(ssh-agent -s)"
   - chmod 600 travis-key
   - ssh-add travis-key
-  - rsync -a ./deploy.sh root@test.mul.space:~/travis-tests/deploy.sh
+  - scp -i travis-key ./deploy.sh root@test.mul.space:~/travis-tests/deploy.sh
 
 deploy:
   provider: script
