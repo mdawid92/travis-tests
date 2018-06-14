@@ -15,11 +15,11 @@ before_deploy:
   - ssh-add travis-key
   - scp -i travis-key ./deploy.sh root@test.mul.space:~/travis-tests/deploy.sh
   - ssh -i travis-key root@test.mul.space "chmod a+x ~/travis-tests/deploy.sh"
-  - ssh -i travis-key root@test.mul.space "~/travis-tests/deploy.sh"
+  - ssh -i travis-key root@test.mul.space travis-tests/deploy.sh
 
 deploy:
   provider: script
   skip_cleanup: true
-  script: ssh -i travis-key -o StrictHostKeyChecking=no root@test.mul.space "~/travis-tests/deploy.sh"
+  script: ssh -i travis-key -o StrictHostKeyChecking=no root@test.mul.space travis-tests/deploy.sh
   on:
     branch: master
