@@ -13,6 +13,7 @@ before_deploy:
   - eval "$(ssh-agent -s)"
   - chmod 600 /tmp/travis-key
   - scp -i /tmp/travis-key ./deploy.sh root@test.mul.space:~/travis-tests/deploy.sh
+  - ssh -i /tmp/travis-key root@test.mul.space "chmod a+x ~/travis-tests/deploy.sh"
 
 deploy:
   provider: script
