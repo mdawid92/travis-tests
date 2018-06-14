@@ -17,6 +17,7 @@ before_deploy:
 
 deploy:
   provider: script
+  skip_cleanup: true
   script: ssh -i /tmp/travis-key root@test.mul.space "~/travis-tests/deploy.sh"
   on:
     branch: master
