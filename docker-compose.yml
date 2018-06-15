@@ -2,8 +2,7 @@ version: '3'
 
 services:
   dummy:
-    build: .
-    image: dummy
+    image: mdawid92/test-travis
     container_name: dummy
   db:
     image: postgres

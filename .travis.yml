@@ -1,22 +1,28 @@
+sudo: required
+services:
+  - docker
+
 language: python
-python:
-  - '3.6'
+
 addons:
   ssh_known_hosts: test.mul.space
 
-
 script:
-  - echo "dupa"
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker build . -t mdawid92/test-travis
+  - docker push mdawid92/test-travis
 
 before_deploy:
   - openssl aes-256-cbc -K $encrypted_33fe656a832f_key -iv $encrypted_33fe656a832f_iv -in travis-key.enc -out travis-key -d
   - eval "$(ssh-agent -s)"
   - chmod 600 travis-key
   - ssh-add travis-key
-
+  - rsync -a ./deploy.sh root@test.mul.space:~/travis-tests/
 deploy:
   provider: script
   skip_cleanup: true
   script: ssh -i travis-key root@test.mul.space "cd ~/travis-tests && ./deploy.sh"
   on:
     branch: master
+dd:
+  secure: REU+K6jItmBIjyaLRKS4GCsuHMYoUr+iZ8IACITHvE175WmUcCSbHZiKza00Dt+l5rRZOHqViNv4FgHgZ9YunXRywsiRl3f+AwuVqE3z+fOkdU1jWVwUjM3mwvaztX28kYR8Oo6vNtLwcwUlj1FQNF/THWljMiZincndQJLuNDPgjAbJJlcjDHycVWorO3YnpGOV+k1coFEgCZix4kRkSu6JM8uRZ5oOM2Zaytt0hiNDXt15huerhJOuftoXWqlRHvIASca96HtmN5CQN7UTIrt6nMQrQZBZd4axM+gshqTvFUGv+NCzP9U8X9gI0Yd5cXgLnYdP4XSxXv4lojrk/j4t+2mHa4ePYLP+Hok6wlvDBiXN1estZ+ERgcWqgclGvIQ1RibF/UV+M4SXAvbXPoDWiKAnxmKCN2zpD08VlqOkSYwgEdsJiDcdoc6zCwlnuzUB3HDBbVrp61R64AcHMwPT7UoeX2WVnAk8tRTKDRo4X58MLtoriSp+CwhGFJTpRHBpgYqdyReHkzGO1mzr00M1z9M6k8HBp3t0nXapDwfXEjpmuqn7RJjGHsU1j4vPFpc04Et/3QY3+G9D23uc3p/cwPyMmrP8Tty99IfBMz9htLXwyof18rLroJn8Z2CT0UM81WlZmviZCF2YZPLK6/SAxknzAARUPpwKe8VJd70=
