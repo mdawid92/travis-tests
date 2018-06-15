@@ -17,7 +17,7 @@ before_deploy:
   - eval "$(ssh-agent -s)"
   - chmod 600 travis-key
   - ssh-add travis-key
-  - rsync -a ./deploy.sh root@test.mul.space:~/travis-tests/
+  - rsync -a --include "docker-compose.yml" --include "deploy.sh" --exclude "*" ./ root@test.mul.space:~/travis-tests/
 deploy:
   provider: script
   skip_cleanup: true
